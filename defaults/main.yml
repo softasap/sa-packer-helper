@@ -1,0 +1,4 @@
+---
+# defaults file for sa-packer-helper
+
+vmware_install_open_vm_tools: no
