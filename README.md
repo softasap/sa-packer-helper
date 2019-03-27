@@ -1,6 +1,8 @@
 sa-packer-helper
 ================
 
+[![Build Status](https://travis-ci.com/softasap/sa-packer-helper.svg?branch=master)](https://travis-ci.com/softasap/sa-packer-helper)
+
 Original credits to  https://github.com/geerlingguy/ansible-role-packer-debian/
 
 ## Requirements
