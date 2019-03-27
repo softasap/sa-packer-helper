@@ -10,10 +10,12 @@
     opts: loop
     state: mounted
     fstype: iso9660
+  become: yes
 
 - name: Run VirtualBox guest additions installation.
   shell: sh /tmp/vbox/VBoxLinuxAdditions.run
   failed_when: false
+  become: yes
 
 - name: Unmount VirtualBox guest additions ISO.
   mount:
@@ -21,8 +23,10 @@
     src: "/home/vagrant/VBoxGuestAdditions_{{ virtualbox_version.stdout }}.iso"
     state: absent
     fstype: iso9660
+  become: yes
 
 - name: Delete VirtualBox guest additions ISO.
   file:
     path: "/home/vagrant/VBoxGuestAdditions_{{ virtualbox_version.stdout }}.iso"
     state: absent
+  become: yes

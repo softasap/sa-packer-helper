@@ -1,9 +1,11 @@
 ---
 - name: Ensure apt cache is updated.
   apt: update_cache=yes cache_valid_time=3600
+  become: yes
 
 - name: Ensure correct kernel headers are installed.
   shell: "apt-get -y install linux-headers-$(uname -r)"
+  become: yes
   tags: ['skip_ansible_lint']
 
 - name: Add configuration to update apt cache on boot.
@@ -13,6 +15,7 @@
     owner: root
     group: root
     mode: 0644
+  become: yes
 
 # SSH daemon configuration.
 - name: Configure SSH daemon.
@@ -26,6 +29,7 @@
       line: 'UseDNS no'
     - regexp: '^GSSAPIAuthentication'
       line: 'GSSAPIAuthentication no'
+  become: yes
 
 # Vagrant SSH configuration.
 - name: Configure Vagrant .ssh directory.
@@ -35,6 +39,7 @@
     owner: vagrant
     group: vagrant
     mode: 0700
+  become: yes
 
 - name: Get Vagrant's public key.
   get_url:
@@ -43,6 +48,7 @@
     owner: vagrant
     group: vagrant
     mode: 0600
+  become: yes
 
 # VirtualBox tools installation.
 - name: Check if VirtualBox is running the guest VM.
@@ -57,6 +63,7 @@
   shell: "dmesg | grep VMware | wc -l"
   changed_when: false
   failed_when: false
+  become: yes
   register: vmware_check
 
 - include_tasks: tasks_vmvare_additions.yml
@@ -65,6 +72,7 @@
 # Cleanup tasks.
 - name: Remove unneeded packages.
   apt: "name={{ item }} state=absent"
+  become: yes
   with_items:
     - ppp
     - pppconfig
@@ -82,11 +90,13 @@
 
 - name: Remove unneeded packages (by regex).
   shell: "apt-get -y remove '.*-dev$'"
+  become: yes
   tags: ['skip_ansible_lint']
 
 - name: Clean up apt.
   command: "{{ item }}"
   changed_when: false
+  become: yes
   with_items:
     - apt-get -y autoremove
     - apt-get -y clean
